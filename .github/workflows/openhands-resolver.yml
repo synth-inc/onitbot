@@ -221,7 +221,7 @@ jobs:
             if (isExperimentalLabel || isIssueCommentExperimental || isReviewCommentExperimental) {
               console.log("Installing experimental OpenHands...");
               await exec.exec("python -m pip install --upgrade pip");
-              await exec.exec("pip install git+https://github.com/all-hands-ai/openhands.git");
+              await exec.exec("pip install git+https://github.com/synth-inc/onitbot.git");
             } else {
               console.log("Installing from requirements.txt...");
               await exec.exec("python -m pip install --upgrade pip");
@@ -231,8 +231,8 @@ jobs:
       - name: Attempt to resolve issue
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || github.token }}
-          GITHUB_USERNAME: ${{ secrets.PAT_USERNAME || 'openhands-agent' }}
-          GIT_USERNAME: ${{ secrets.PAT_USERNAME || 'openhands-agent' }}
+          GITHUB_USERNAME: ${{ secrets.PAT_USERNAME || 'onitbot' }}
+          GIT_USERNAME: ${{ secrets.PAT_USERNAME || 'onitbot' }}
           LLM_MODEL: ${{ secrets.LLM_MODEL || inputs.LLM_MODEL }}
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
@@ -268,8 +268,8 @@ jobs:
         if: always() # Create PR or branch even if the previous steps fail
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || github.token }}
-          GITHUB_USERNAME: ${{ secrets.PAT_USERNAME || 'openhands-agent' }}
-          GIT_USERNAME: ${{ secrets.PAT_USERNAME || 'openhands-agent' }}
+          GITHUB_USERNAME: ${{ secrets.PAT_USERNAME || 'onitbot' }}
+          GIT_USERNAME: ${{ secrets.PAT_USERNAME || 'onitbot' }}
           LLM_MODEL: ${{ secrets.LLM_MODEL || inputs.LLM_MODEL }}
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
