@@ -225,9 +225,9 @@ class AgentController:
                 err_id = 'STATUS$ERROR_LLM_SERVICE_UNAVAILABLE'
             elif isinstance(e, litellm.InternalServerError):
                 err_id = 'STATUS$ERROR_LLM_INTERNAL_SERVER_ERROR'
-            elif isinstance(e, RateLimitError):
-                await self.set_agent_state_to(AgentState.RATE_LIMITED)
-                return
+            # elif isinstance(e, RateLimitError):
+            #     await self.set_agent_state_to(AgentState.RATE_LIMITED)
+            #     return
             self.status_callback('error', err_id, type(e).__name__ + ': ' + str(e))
 
     def step(self):
