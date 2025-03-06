@@ -16,7 +16,6 @@ from termcolor import colored
 import openhands
 from openhands.controller.state.state import State
 from openhands.core.config import AgentConfig, AppConfig, LLMConfig, SandboxConfig
-from openhands.core.config.condenser_config import RecentEventsCondenserConfig
 from openhands.core.logger import openhands_logger as logger
 from openhands.core.main import create_runtime, run_controller
 from openhands.events.action import CmdRunAction, MessageAction
@@ -211,8 +210,6 @@ async def process_issue(
         if user_id == 0:
             sandbox_config.user_id = get_unique_uid()
 
-    condenser_config = RecentEventsCondenserConfig(keep_first=1, max_events=10)
-
     config = AppConfig(
         default_agent='CodeActAgent',
         runtime='docker',
@@ -222,11 +219,7 @@ async def process_issue(
         # do not mount workspace
         workspace_base=workspace_base,
         workspace_mount_path=workspace_base,
-        agents={
-            'CodeActAgent': AgentConfig(
-                disabled_microagents=['github'], condenser=condenser_config
-            )
-        },
+        agents={'CodeActAgent': AgentConfig(disabled_microagents=['github'])},
     )
     config.set_llm_config(llm_config)
 
@@ -667,6 +660,8 @@ def main() -> None:
         model=my_args.llm_model or os.environ['LLM_MODEL'],
         api_key=SecretStr(api_key) if api_key else None,
         base_url=my_args.llm_base_url or os.environ.get('LLM_BASE_URL', None),
+        retry_min_wait=60,
+        retry_max_wait=60,
     )
 
     repo_instruction = None
