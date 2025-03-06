@@ -229,8 +229,8 @@ class AgentController:
             elif isinstance(e, litellm.BadRequestError) and 'ExceededBudget' in str(e):
                 err_id = 'STATUS$ERROR_LLM_OUT_OF_CREDITS'
             elif isinstance(e, RateLimitError):
-                await self.set_agent_state_to(AgentState.RATE_LIMITED)
-                return
+                self.log('error', 'Rate limit error, sleeping for 60 seconds')
+                await asyncio.sleep(60)
             self.status_callback('error', err_id, type(e).__name__ + ': ' + str(e))
 
     def step(self):
